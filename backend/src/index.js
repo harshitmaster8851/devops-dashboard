@@ -6,6 +6,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+const githubRoutes = require("./routes/github");
+app.use("/api/github", githubRoutes);
+
+
 // health route
 app.get("/health", (req, res) => {
   res.send("Backend running 🚀");
