@@ -7,6 +7,7 @@ require("dotenv").config();
 const githubRoutes = require("./routes/github");
 const { getGithubRuns } = require("./services/githubService");
 const { getPods } = require("./services/k8sService"); // ✅ NEW
+const { getArgoApps } = require("./services/argoService");
 
 const app = express();
 app.use(cors());
@@ -47,6 +48,14 @@ setInterval(async () => {
       io.emit("k8sData", pods);
     } catch (err) {
       console.log("K8s not ready yet ⚠️");
+    }
+    
+    // ✅ ArgoCD data (NEW)
+    try {
+      const apps = await getArgoApps();
+      io.emit("argoData", apps);
+    } catch (err) {
+      console.log("Argo not ready ⚠️");
     }
 
     console.log("Sent real-time update ⚡");

@@ -6,6 +6,7 @@ let socket;
 function App() {
   const [data, setData] = useState([]);
   const [pods, setPods] = useState([]);
+  const [argoApps, setArgoApps] = useState([]); // ✅ FIXED
 
   useEffect(() => {
     if (!socket) {
@@ -19,10 +20,23 @@ function App() {
         setData(newData);
       });
 
+      socket.on("argoData", (data) => {
+        console.log("Argo:", data);
+        setArgoApps(data);
+      });
+
       socket.on("k8sData", (podData) => {
         setPods(podData);
       });
     }
+
+    // cleanup (important for avoiding duplicate sockets)
+    return () => {
+      if (socket) {
+        socket.disconnect();
+        socket = null;
+      }
+    };
   }, []);
 
   return (
@@ -87,13 +101,43 @@ function App() {
           })}
         </div>
       )}
+
+      {/* ArgoCD Section */}
+      <h2 style={{ marginTop: "30px" }}>🚀 ArgoCD Deployments</h2>
+      {argoApps.length === 0 ? (
+        <p style={styles.empty}>No Argo data...</p>
+      ) : (
+        <div style={styles.grid}>
+          {argoApps.map((app) => {
+            const color =
+              app.status === "Synced"
+                ? "#22c55e"
+                : app.status === "OutOfSync"
+                ? "#f59e0b"
+                : "#ef4444";
+
+            return (
+              <div key={app.name} style={styles.card}>
+                <div style={styles.header}>
+                  <span>{app.name}</span>
+                  <span style={{ color }}>{app.status}</span>
+                </div>
+
+                <div style={styles.body}>
+                  <p>Health: {app.health}</p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }
 
 export default App;
 
-// ✅ styles MUST be outside component
+// ✅ styles outside component
 const styles = {
   container: {
     backgroundColor: "#0f172a",
