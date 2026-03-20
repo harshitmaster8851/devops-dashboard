@@ -20,30 +20,41 @@ function App() {
   }, []);
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>🚀 DevOps Dashboard</h1>
+    <div style={{ padding: "20px", fontFamily: "Arial" }}>
+    <h1 style={{ textAlign: "center" }}>🚀 DevOps Dashboard</h1>
 
-      {data.length === 0 ? (
-        <p>No data yet...</p>
-      ) : (
-        data.map((run) => (
+    {data.length === 0 ? (
+      <p style={{ textAlign: "center" }}>No data yet...</p>
+    ) : (
+      data.map((run) => {
+        const color =
+          run.conclusion === "success"
+            ? "#d4edda"
+            : run.conclusion === "failure"
+            ? "#f8d7da"
+            : "#fff3cd";
+
+        return (
           <div
             key={run.id}
             style={{
-              border: "1px solid #ccc",
-              padding: "10px",
-              margin: "10px 0",
-              borderRadius: "8px",
+              background: color,
+              padding: "15px",
+              margin: "15px auto",
+              borderRadius: "10px",
+              width: "60%",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
             }}
           >
-            <p><strong>Branch:</strong> {run.head_branch}</p>
-            <p><strong>Status:</strong> {run.status}</p>
-            <p><strong>Conclusion:</strong> {run.conclusion}</p>
-            <p><strong>Commit:</strong> {run.head_commit?.message}</p>
+            <p><strong>🌿 Branch:</strong> {run.head_branch}</p>
+            <p><strong>⚙️ Status:</strong> {run.status}</p>
+            <p><strong>✅ Result:</strong> {run.conclusion}</p>
+            <p><strong>💬 Commit:</strong> {run.head_commit?.message}</p>
           </div>
-        ))
-      )}
-    </div>
+        );
+      })
+    )}
+  </div>
   );
 }
 
