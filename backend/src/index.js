@@ -6,6 +6,7 @@ require("dotenv").config();
 
 const githubRoutes = require("./routes/github");
 const { getGithubRuns } = require("./services/githubService");
+const { getPods } = require("./services/k8sService"); // ✅ NEW
 
 const app = express();
 app.use(cors());
@@ -16,15 +17,15 @@ app.use("/api/github", githubRoutes);
 // 🔹 create HTTP server
 const server = http.createServer(app);
 
-// 🔹 attach socket.io
+// 🔹 socket config (fixed)
 const io = new Server(server, {
   cors: {
-	  origin: "http://localhost:3000",
-	  methods: ["GET", "POST"],
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
   },
 });
 
-// 🔹 when client connects
+// 🔹 connection
 io.on("connection", (socket) => {
   console.log("Client connected 🔌");
 
@@ -33,11 +34,21 @@ io.on("connection", (socket) => {
   });
 });
 
-// 🔹 polling loop (every 15 sec)
+// 🔹 polling loop
 setInterval(async () => {
   try {
-    const data = await getGithubRuns();
-    io.emit("githubData", data); // send to all clients
+    // ✅ GitHub data
+    const githubData = await getGithubRuns();
+    io.emit("githubData", githubData);
+
+    // ✅ Kubernetes data
+    try {
+      const pods = await getPods();
+      io.emit("k8sData", pods);
+    } catch (err) {
+      console.log("K8s not ready yet ⚠️");
+    }
+
     console.log("Sent real-time update ⚡");
   } catch (err) {
     console.error("Socket error:", err.message);

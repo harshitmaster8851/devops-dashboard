@@ -22,12 +22,20 @@ async function getGithubRuns() {
     },
   });
 
-  const data = response.data.workflow_runs;
+  const runs = response.data.workflow_runs;
 
-  // 🔹 store in Redis (15 sec)
-  await redis.set(cacheKey, JSON.stringify(data), "EX", 15);
+  const formatted = runs.map((run) => ({
+    id: run.id,
+    status: run.status,
+    conclusion: run.conclusion,
+    branch: run.head_branch,
+    commit: run.head_commit?.message,
+  }));
 
-  return data;
+  // 🔹 store formatted data in Redis
+  await redis.set(cacheKey, JSON.stringify(formatted), "EX", 15);
+
+  return formatted;
 }
 
 module.exports = { getGithubRuns };
