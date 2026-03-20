@@ -5,7 +5,9 @@ function App() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    const socket = io("http://localhost:5000");
+    const socket = io("http://localhost:5000",{
+	    transports: ["websocket"],
+    });
 
     socket.on("connect", () => {
       console.log("✅ Connected to backend");
