@@ -6,8 +6,11 @@ require("dotenv").config();
 
 const githubRoutes = require("./routes/github");
 const { getGithubRuns } = require("./services/githubService");
-const { getPods } = require("./services/k8sService"); // ✅ NEW
+const { getPods } = require("./services/k8sService");
 const { getArgoApps } = require("./services/argoService");
+const { calculateDoraMetrics } = require("./services/doraService");
+const { getMetrics } = require("./services/prometheusService");
+
 
 const app = express();
 app.use(cors());
@@ -18,7 +21,7 @@ app.use("/api/github", githubRoutes);
 // 🔹 create HTTP server
 const server = http.createServer(app);
 
-// 🔹 socket config (fixed)
+// 🔹 socket config
 const io = new Server(server, {
   cors: {
     origin: "http://localhost:3000",
@@ -45,17 +48,30 @@ setInterval(async () => {
     // ✅ Kubernetes data
     try {
       const pods = await getPods();
+      console.log("PODS:", pods);
       io.emit("k8sData", pods);
     } catch (err) {
       console.log("K8s not ready yet ⚠️");
     }
-    
-    // ✅ ArgoCD data (NEW)
+
+    // ✅ ArgoCD data
     try {
       const apps = await getArgoApps();
       io.emit("argoData", apps);
     } catch (err) {
       console.log("Argo not ready ⚠️");
+    }
+
+    const dora = calculateDoraMetrics(githubData);
+       io.emit("doraData", dora);
+
+    // ✅ NEW: Prometheus metrics
+    try {
+      const metrics = await getMetrics();
+      console.log("METRICS:", metrics);
+      io.emit("metricsData", metrics);
+    } catch (err) {
+      console.log("Prometheus not ready ⚠️");
     }
 
     console.log("Sent real-time update ⚡");
