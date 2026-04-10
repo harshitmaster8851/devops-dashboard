@@ -6,24 +6,24 @@ Modern DevOps workflows are fragmented across tools. Engineers context-switch be
 
 ---
 
-## 🌍 Real-World Use Cases
+##  Real-World Use Cases
 
-- 🚨 **Incident Response**  
+-  **Incident Response**  
   Detect pod failures instantly, view related deployments, metrics, and logs in one place → faster MTTR  
 
-- 🚀 **Deployment Monitoring**  
+-  **Deployment Monitoring**  
   Track releases in real time (CI/CD → ArgoCD → Kubernetes) → safer deployments  
 
-- 🔍 **Pipeline Debugging**  
+-  **Pipeline Debugging**  
   Identify failed pipelines and their infra impact instantly → quicker fixes  
 
-- 📊 **DORA Metrics Tracking**  
+-  **DORA Metrics Tracking**  
   Monitor deployment frequency, failure rate, and MTTR → data-driven decisions  
 
-- 🔄 **On-Call Handoff**  
+-  **On-Call Handoff**  
   Single dashboard for system state → smooth shift transitions  
 
-- 🎓 **DevOps Learning**  
+-  **DevOps Learning**  
   Visualize full flow (code → deploy → infra → metrics) → faster onboarding  
 
 ---
@@ -51,7 +51,7 @@ Modern DevOps workflows are fragmented across tools. Engineers context-switch be
 
 
 <p align="center">
-  <img src="./assets/pipelinepulse_architecture_diagram.svg" width="700"/>
+  <img src="./assets/pipeline_arch.svg" width="700"/>
 </p>
 
 **Key engineering decisions:**
