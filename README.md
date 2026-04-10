@@ -28,26 +28,7 @@ Modern DevOps workflows are fragmented across tools. Engineers context-switch be
 ## Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                        Data Sources                         │
-│  GitHub Actions API  │  Kubernetes API  │  Prometheus  │  ArgoCD  │
-└────────────┬─────────────────┬──────────────────────────────┘
-             │                 │
-             ▼                 ▼
-┌─────────────────────────────────────────────────────────────┐
-│           Node.js + Express — Aggregation Layer             │
-│     Data normalization · API routing · transformation       │
-└────────────────────────┬──────────────┬─────────────────────┘
-                         │              │
-                    ┌────▼────┐    ┌────▼────┐
-                    │  Redis  │    │Socket.IO│
-                    │  cache  │    │ server  │
-                    └─────────┘    └────┬────┘
-                                        │  real-time stream
-             ┌──────────────────────────▼──────────────────────────┐
-             │                   React Frontend                     │
-             │  CI/CD panel │ Infra panel │ Metrics panel │ DORA   │
-             └─────────────────────────────────────────────────────┘
+https://drive.google.com/file/d/1bId_PmsQ4bXVZLEZZb1O5JuNtT9XLPFa/view?usp=drive_link
 ```
 
 **Key engineering decisions:**
