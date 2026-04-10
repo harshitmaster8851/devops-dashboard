@@ -44,7 +44,7 @@ Modern DevOps workflows are fragmented across tools. Engineers context-switch be
 
 | Layer | Technology |
 |---|---|
-| Frontend | React, Tailwind CSS |
+| Frontend | React|
 | Backend | Node.js, Express |
 | Real-time | Socket.IO |
 | Cache | Redis |
