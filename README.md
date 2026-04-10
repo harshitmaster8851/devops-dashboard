@@ -28,8 +28,9 @@ Modern DevOps workflows are fragmented across tools. Engineers context-switch be
 ## Architecture
 
 
-<img src="./assets/pipelinepulse_architecture_diagram.svg" width="500"/>
-
+<p align="center">
+  <img src="./assets/pipelinepulse_architecture_diagram.svg" width="700"/>
+</p>
 
 **Key engineering decisions:**
 
